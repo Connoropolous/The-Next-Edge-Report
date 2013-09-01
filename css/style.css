@@ -1,0 +1,459 @@
+.clearfloat {
+  clear:both;
+}
+
+.demo-logo small {
+  color: rgba(255,255,255,0.5);
+}
+
+body {
+  background:#2C3E50;
+}
+
+.template {
+  display:none;
+}
+
+.demo-headline {
+  padding: 73px 0 0;
+  text-align: center;
+}
+
+.demo-headline a {
+  color:white;
+  text-decoration:none;
+}
+
+.progress.quickstats {
+  height:30px;
+  line-height:30px;
+}
+
+.progress.quickstats .bar {
+  font-size:16px;
+} 
+
+.homepageIntro {
+  color:#FFF;
+}
+
+.homepageBox {
+  border-radius:6px;
+  color:#000;
+  margin-bottom:20px;
+}
+
+.homepageBox.edge {
+  background: url(/images/edgebg.jpg) no-repeat -18px -3px;
+  height: 300px;
+}
+
+.homepageBox.facebook {
+  background-color: rgba(255,255,255,0.1);
+  color: #ECF0F1;
+}
+
+.fb_iframe_widget span {
+  width:190px !important;
+}
+
+.span3.homepageBox h3{
+  padding-left:10px;
+}
+
+.homepageBox .addSpace {
+  padding:0 10px 10px 10px;
+}
+
+.progress.loading {
+  width:940px;
+  margin-left:20px;
+}
+#loadingpeople, #loadingposts {
+  margin-left:0px;
+}
+
+.download {
+  font-size: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  line-height: 50px;
+  width:916px;
+}
+
+
+/* cards */
+.post_card, .person_card {
+  width: 300px;
+  height: auto;
+  margin: 5px;
+  float: left;
+  overflow: hidden;
+  position: relative;
+  background: #EEE;
+  color: #222;
+  -webkit-border-top-right-radius: 1.2em;
+      -moz-border-radius-topright: 1.2em;
+          border-top-right-radius: 1.2em;
+}
+.post_card.large{
+  width:920px;
+}
+
+.post_card.link {
+  background-color:#E67E22;
+}
+.toprow .link, .checkbox.checked.link .icons {
+  color:#E67E22;
+}
+.post_card.status {
+  background-color:#2ECC71;
+}
+.toprow .status, .checkbox.checked.status .icons {
+  color:#2ECC71;
+}
+.post_card.video {
+  background-color:#3498DB;
+}
+.toprow .video, .checkbox.checked.video .icons {
+  color:#3498DB;
+}
+.post_card.photo {
+  background-color:#9B59B6;
+}
+.toprow .photo, .checkbox.checked.photo .icons {
+  color:#9B59B6;
+}
+
+.post_card .photoImage, .post_card .linkLink {
+  display:block;
+  width:100%;
+  padding-bottom:10px;
+}
+.post_card a.linkLink {
+  text-decoration:none;
+  color:white;
+  border-top-right-radius: 1.2em;
+  background-color: rgba(255,255,255,0.2);
+}
+.post_card a.linkLink:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+.post_card a.linkLink .name,.post_card a.linkLink .description {
+  font-size:12px;
+} 
+.post_card .linkLink img {
+  width:100px;
+  height:100px;
+  float:left;
+  padding-right:10px;
+  padding-bottom:10px;
+}
+.post_card .photoImage img {
+  width:100%;
+}
+.post_card .name {
+  padding:5px 10px;
+  font-size:16px;
+  font-weight:bold;
+}
+.post_card .message{
+  padding:10px 10px 20px;
+  font-size:16px;
+}
+.post_card.status .message:hover,.post_card.link .message:hover  {
+  cursor:pointer;
+  background-color: rgba(255,255,255,0.1);
+}
+.post_card .caption, .post_card .description {
+  padding:10px;
+  font-size:16px;
+}
+.post_card .metadata {
+  position:relative;
+  background:white;
+  padding:5px;
+  height:20px;
+}
+.post_card .metadata div {
+  float:left;
+}
+.post_card .fui-heart {
+  margin-left:10px;
+}
+.post_card .fui-heart,.post_card .fui-chat,.post_card .fui-user {
+  font-size:14px;
+  line-height:22px;
+}
+.post_card .likes {
+  margin-right:10px;
+  line-height: 22px;
+  margin-left: 5px;
+}
+.post_card .comments {
+  margin-right:10px;
+  line-height: 22px;
+  margin-left: 5px;
+}
+.post_card .person {
+  line-height: 22px;
+  margin-left: 5px;
+}
+.post_card .time {
+  position: absolute;
+  font-size: 11px;
+  right: 0;
+  margin-top: -20px;
+  margin-right: 5px;
+  color: white;
+}
+
+.post_card .linknomessage, .post_card .type {
+  display:none;
+}
+
+/* person cards */
+.row.dashboard .typefilter.people {
+  width:436px;
+}
+.row.dashboard .filtername, .row.dashboard .sortbyperson {
+  margin-left:10px;
+}
+
+.person_card {
+  width: 300px;
+  height: 300px;
+  margin: 5px;
+  float: left;
+  overflow: hidden;
+  position: relative;
+  background: #EEE;
+  color: #222;
+  -webkit-border-top-right-radius: 1.2em;
+      -moz-border-radius-topright: 1.2em;
+          border-top-right-radius: 1.2em;
+}
+
+.person_card .posts {
+  padding: 10px 20px 10px;
+  border-bottom: 1px solid #2ecc71;
+}
+
+.person_card .postsleft {
+  font-size: 40px;
+  line-height: 50px;
+}
+
+.person_card .received {
+  font-size: 16px;
+}
+
+.person_card .commentsreceived {
+  color: #e74c3c;
+  font-size:20px;
+}
+
+.person_card .postlikesreceived {
+  color: #1abc9c;
+  font-size:20px;
+}
+
+.person_card .comments {
+  border-bottom: 1px solid #2ecc71;
+}
+.comments .commentsgroup, .comments .postlikesleftwrapper {
+  float:left;
+  padding:10px 19px;
+}
+
+.person_card .postlikesleft {
+  color:#1abc9c;
+  font-size:22px;
+}
+
+.comments .commentsgroup {
+  border-right: 1px solid #2ecc71;
+}
+
+.person_card .commentsleft {
+  color: #e74c3c;
+  font-size: 22px;
+}
+.person_card .commentlikesreceived {
+  color: #1abc9c;
+  font-size: 15px;
+}
+.person_card .person_footer {
+  border-bottom: 1px solid #2ecc71;
+}
+.person_card .person_footer img, .person_card .person_footer div:not(.clearfloat) {
+  float:left;
+}
+.person_card .person_footer .name {
+padding-left: 15px;
+font-size: 22px;
+color: #3498db;
+line-height: 50px;
+display: block;
+width: 235px;
+background: rgba(46,204,113,0.2);
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+}
+
+.person_card .statRow  div:not(.clearfloat) {
+  float:left;
+} 
+
+.person_card .statRowOne, .person_card .statRowTwo {
+  border-bottom: 1px solid #2ecc71;
+}
+
+.person_card .rowLabel {
+  font-size:13px;
+}
+
+.person_card .statRow  .cell1 {
+  width:29px;
+  height:17px;
+  padding: 4px;
+  border-right: 1px solid #2ecc71;
+}
+.person_card .statRowOne .rowLabel, .person_card .avglikespost,.person_card .avgcommentspost,.person_card .avglikescomment  {
+  width:90px;
+  padding: 4px;
+}
+.person_card .statRowOne .rowLabelOne, .person_card .avglikespost  {
+  width:57px;
+  border-right: 1px solid #2ecc71;
+}
+.person_card .statRow .rowLabelTwo  {
+  width:89px;
+  border-right: 1px solid #2ecc71;
+}
+.person_card .statRowThree {
+  
+}
+.person_card .statRowThree .rowLabel {
+  font-size:20px;
+  color: #3498db;
+  padding: 4px 13px;
+}
+.person_card .statRowThree .totallikes {
+  padding: 4px 15px 10px;
+  border-left: 1px solid #2ecc71;
+  font-size:20px;
+  color: #3498db;
+}
+
+/* footer */
+footer {
+  color: #7F8C8D;
+}
+
+.footer-title span {
+  position:relative;
+  top: 4px;
+  left:20px;
+}
+
+.connorprofile {
+  float:left;
+  padding-right:5px;
+  padding-bottom:5px;
+}
+
+.footer-banner ul {
+  margin: 0 0 5px;
+}
+
+/**** Isotope Filtering ****/
+
+.row.dashboard {
+  padding-top:20px;
+  background-color: white;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  width: 940px;
+  margin-left: 0;
+}
+
+.typefilter span {
+  float:left;
+  margin-right:22px;
+}
+.typefilter .toprow {
+  margin-top:9px;
+}
+.typefilter .exclude {
+  margin-bottom:10px;
+}
+.typefilter .pushdown {
+  margin-top:5px;
+}
+.typefilter .pushdown.justcheck {
+  margin-right:0px;
+}
+.typefilter span .select-block {
+  width:72px;
+}
+.typefilter span.justselect .select-block {
+  width:56px;
+}
+
+#noMatches {
+ display:none;
+ color:white;
+}
+
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+
+.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+      -ms-transition-duration: 0.8s;
+       -o-transition-duration: 0.8s;
+          transition-duration: 0.8s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
+}
+
+/**** disabling Isotope CSS3 transitions ****/
+
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
+}
+
+
+/* end isotope styles */
