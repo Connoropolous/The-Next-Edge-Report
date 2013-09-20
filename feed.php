@@ -31,6 +31,7 @@
       
       <script>
           $(document).ready(function(){
+            addFilterHiding();
             TNER.View.init();
             TNER.View.isotope();
             
@@ -46,55 +47,23 @@
           });
       </script>
     
-      <div class="row">
+      <div class="row collection">
         <div class="span12">
             <div id="isotope-container">
               
             </div>
             <p id="noMatches">No matches found</p>
-            <button type="button" class="btn" id="loadMore" onclick="loadPosts()">Load more</button>
+            <button type="button" class="btn" id="loadMore" onclick="loadPosts()">Load 25 more</button>
         </div>
       </div> <!-- /row -->
       
       <div class="row">
-        <a class="span12 btn btn-warning download" href="#fakelink" >
+        <a class="span12 btn btn-warning download" href="/download.php" >
           Download Our Data
         </a>
       </div> <!-- /row -->
     </div><!-- /container -->
     
     <?php include 'footer.php'; ?>
-    <script>
-      var lastScroll = 5000;
-      $(document).ready(function(){
-        $(window).scroll(function() {
-          var scrollTop = 393;
-          if($(window).scrollTop() >= scrollTop && $(window).scrollTop() < lastScroll){
-            $('.row.dashboard').css({
-              position: 'fixed',
-              top: '0',
-              display: 'block',
-              'z-index': '5',
-              'border-top-left-radius': '0px',
-              'border-top-right-radius': '0px'
-            });
-          }
-          else if ($(window).scrollTop() >= scrollTop && $(window).scrollTop() > lastScroll){
-            $('.row.dashboard').css({
-              display: 'none'
-            });
-          }
-          else if($(window).scrollTop() < scrollTop){
-            $('.row.dashboard').css({
-              position: 'static',
-              display: 'block',
-              'border-top-left-radius': '6px',
-              'border-top-right-radius': '6px'
-            });
-          }
-          lastScroll = $(window).scrollTop();
-        });
-      });
-    </script>
   </body>
 </html>

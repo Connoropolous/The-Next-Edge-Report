@@ -1,3 +1,4 @@
+<div class="hidefilters btn btn-primary">Hide Panel (ctrl-h)</div>
 <div class="row dashboard posts">
         <div class="span6 typefilter">
             <span class="toprow">Show Me: </span>

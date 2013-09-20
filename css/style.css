@@ -65,6 +65,13 @@ body {
   padding:0 10px 10px 10px;
 }
 
+.postsTitle {
+  width:920px;
+  margin-left:20px;
+  color:#FFF;
+  display:none;
+}
+
 .progress.loading {
   width:940px;
   margin-left:20px;
@@ -125,7 +132,7 @@ body {
   color:#9B59B6;
 }
 
-.post_card .photoImage, .post_card .linkLink {
+.post_card .linkLink {
   display:block;
   width:100%;
   padding-bottom:10px;
@@ -149,9 +156,16 @@ body {
   padding-right:10px;
   padding-bottom:10px;
 }
-.post_card .photoImage img {
-  width:100%;
+
+.post_card .photoImage {
+  float:left;
+  padding-right:5px;
+  padding-bottom:5px;
 }
+.post_card .photoImage img{
+  height:120px !important;
+}
+
 .post_card .name {
   padding:5px 10px;
   font-size:16px;
@@ -160,11 +174,34 @@ body {
 .post_card .message{
   padding:10px 10px 20px;
   font-size:16px;
+  max-height: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
-.post_card.status .message:hover,.post_card.link .message:hover  {
-  cursor:pointer;
-  background-color: rgba(255,255,255,0.1);
+
+.post_card.video .name, .post_card.video .description {
+  background: rgba(255,255,255,0.2);
 }
+.post_card.video .description {
+  font-style:italic;
+}
+
+.post_card .playbutton {
+  width: 32px;
+  height: 36px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-image: url(/images/video/play-2x.png);
+  cursor: pointer;
+}
+.post_card .videoImg {
+  display:block;
+  width:300px;
+  height: 165px;
+  overflow:hidden;
+}
+
 .post_card .caption, .post_card .description {
   padding:10px;
   font-size:16px;
@@ -198,6 +235,10 @@ body {
 .post_card .person {
   line-height: 22px;
   margin-left: 5px;
+  max-width: 125px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .post_card .time {
   position: absolute;
@@ -206,6 +247,38 @@ body {
   margin-top: -20px;
   margin-right: 5px;
   color: white;
+  background: #888;
+  padding: 1px;
+}
+
+.post_card .expand {
+  width: 14px;
+  height: 14px;
+  cursor:pointer;
+  background-image: url(/images/expand.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: 5px;
+}
+.post_card.large .expand {
+  background-image: url(/images/close.png);
+}
+.post_card .ejectPost {
+  float:left;
+  width:16px;
+  height:16px;
+  background-image: url(/images/popout.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: 3px;
+  margin-left: 5px;
+}
+
+.post_card .message a {
+  color:white;
+}
+.post_card .message a:hover {
+  color:#DDD;
 }
 
 .post_card .linknomessage, .post_card .type {
@@ -233,6 +306,53 @@ body {
       -moz-border-radius-topright: 1.2em;
           border-top-right-radius: 1.2em;
 }
+
+.person_card .overlay, .person_card .overlayLittle {
+  display:none;
+  position:absolute;
+  z-index:10;
+  background:rgba(155,89,182,0.8);
+  color:#FFF;
+  cursor:pointer;
+}
+.person_card .overlay {
+  font-size:18px;
+  top:0;
+  left:0;
+  width:300px;
+  height:95px;
+  line-height:95px;
+  text-align:center;
+}
+.person_card .overlayLittle {
+  top:0;
+  left:0;
+  height:65px;
+  width:104px;
+  line-height:65px;
+  text-align:center;
+}
+
+
+.person_card.activator .posts {
+background-image: url(/images/activatorClear.png);
+background-size: 40px 40px;
+background-repeat: no-repeat;
+background-position: center right;
+}
+.person_card.enhancer .commentsgroup {
+background-image: url(/images/enhancerClear.png);
+background-repeat: no-repeat;
+background-size: 25px 25px;
+background-position: 141px 38px;
+}
+.person_card.advocator .postlikesleftwrapper { 
+background-image: url(/images/advocatorClear.png);
+background-repeat: no-repeat;
+background-size: 25px 25px;
+background-position: 75px 8px;
+}
+
 
 .person_card .posts {
   padding: 10px 20px 10px;
@@ -264,6 +384,9 @@ body {
 .comments .commentsgroup, .comments .postlikesleftwrapper {
   float:left;
   padding:10px 19px;
+}
+.comments .postlikesleftwrapper {
+  position:relative;
 }
 
 .person_card .postlikesleft {
@@ -362,6 +485,8 @@ footer {
   float:left;
   padding-right:5px;
   padding-bottom:5px;
+  width:50px;
+  height:50px;
 }
 
 .footer-banner ul {
@@ -377,6 +502,28 @@ footer {
   margin-bottom: 20px;
   width: 940px;
   margin-left: 0;
+}
+
+.hidefilters {
+  display: none;
+  position: fixed;
+  left: 50%;
+  margin-left: -613px;
+  top: 90px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.postfilters {
+  position:relative;
+}
+.returnToPeople {
+  position: absolute;
+  left: -30px;
+  margin-left: 0px;
+  top: 39px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 .typefilter span {
@@ -457,3 +604,60 @@ footer {
 
 
 /* end isotope styles */
+
+/* people page */
+
+.peopleContent {
+  color:white;
+}
+
+.peopleTypes {
+  display:none;
+  background: white;
+  border-radius: 6px;
+  padding: 10px;
+  width: 920px;
+  margin-bottom:20px;
+}
+
+.peopleTypes img, .peopleTypes p {
+  float:left;
+  margin-right:8px;
+}
+
+.peopleTypes .typeTitle {
+  font-weight:bold;
+}
+
+
+/* top posts */
+
+.loading.archive {
+  display:none;
+}
+
+.btn1, .btn2 {
+  width:446px;
+  height:100px;
+  line-height:100px;
+  font-size:25px;
+}
+.btn1 {
+  border-top-right-radius:0px;
+  border-bottom-right-radius:0px;
+}
+.btn2 {
+  border-top-left-radius:0px;
+  border-bottom-left-radius:0px;
+  margin-left:0px;
+}
+
+.footer-banner {
+  min-height:453px;
+  position:relative;
+}
+
+.footer-banner form {
+  position:absolute;
+  left:212px;
+}

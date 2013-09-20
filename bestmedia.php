@@ -27,23 +27,39 @@
     <div class="container">
       <?php include 'header.php'; ?>
       
-      <div class="row">
-        <div class="span9 homepageIntro">
-          <h3 class="demo-panel-title">Introduction</h3>
-          <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt tortor ac suscipit sollicitudin. Aenean ut sodales nisl, a vulputate quam. Donec sollicitudin molestie felis, ac cursus tellus tincidunt at. Vestibulum vitae turpis in risus condimentum lobortis quis ac quam. Phasellus arcu tellus, mollis sed erat nec, malesuada eleifend metus. Vestibulum ante risus, vestibulum at tellus eu, ullamcorper ultricies nulla. Quisque fermentum, purus sed euismod porta, nisl sem tristique nunc, ac luctus diam nulla vel leo. Etiam nec luctus libero, eget accumsan tortor.
-</p><p>
-Cras blandit est vel leo mollis, aliquam malesuada nulla gravida. Nulla vel luctus ipsum. Integer id ullamcorper neque. Sed lobortis felis sit amet volutpat venenatis. Nam a malesuada magna, non tempor est. Quisque id lectus tempor, convallis nibh at, pulvinar lorem. Nulla quis libero cursus quam molestie congue. Donec sit amet est ipsum. Fusce diam lectus, eleifend id orci sed, tempor cursus velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nibh diam, bibendum ut adipiscing vitae, imperdiet a elit. Donec sodales quis massa quis auctor. Donec risus sapien, rhoncus in tristique in, commodo ac elit.
-          </p>
+      <?php include 'postfilters.php'; ?>
+      
+      <script>
+          $(document).ready(function(){
+            addFilterHiding();
+            TNER.View.init();
+            TNER.View.isotope();
+          });
+        </script>
+      
+      <div class="row collection">
+        <div class="choosePosts">
+          <div class="span6 btn btn-info btn1" onclick="return loadArchive('40bestvideos.json');">
+            View Top 40 Videos
+          </div>
+          <div class="span6 btn btn-danger btn2" onclick="return loadArchive('40bestlinks.json');">
+            View Top 40 Links
+          </div>
         </div>
-        <div class="span3 homepageBox">
-          <h3 class="demo-panel-title">Self-Reflexivity</h3>
-          
+        <h3 class="postsTitle"></h3>
+        <div class="progress loading archive">
+          <div class="bar span12" id="loadingposts" style="width: 0%; height: 30px;">loading posts...</div>
+        </div>
+        <div class="span12">
+            <div id="isotope-container">
+              
+            </div>
+            <p id="noMatches">No matches found</p>
         </div>
       </div> <!-- /row -->
       
       <div class="row">
-        <a class="span12 btn btn-warning download" href="#fakelink" >
+        <a class="span12 btn btn-warning download" href="/download.php" >
           Download Our Data
         </a>
       </div> <!-- /row -->

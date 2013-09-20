@@ -1,6 +1,31 @@
 var TNER = {};
 
 TNER.Filter = {
+  reset: function() {
+    $('.dashboard.posts').html(TNER.View.defaultFilter);
+    $('.dashboard.people').html(TNER.PeopleView.defaultFilter);
+    TNER.View.init();
+    TNER.PeopleView.init();
+    TNER.Filter.posts = {
+    status: true,
+    link: true,
+    video: true,
+    photo: true,
+    personname: '',
+    keyword: '',
+    likes: false,
+    numberlikes: 0,
+    likeCOMBOcomment: 'OR',
+    comments: false,
+    numbercomments: 0,
+    likescommentsCOMBOlinknomessage: 'OR',
+    linknomessage: false
+    };
+    TNER.Filter.people = {
+    type: 'all',
+    person: ''
+    };
+  },
   posts: {
     status: true,
     link: true,
@@ -54,6 +79,11 @@ function parseDate(input) {
 function dateToString(d) {
   var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
   return month + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+
+function convertToLinks(text) {
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
 }
 
 function passFilters(jqObj) {
@@ -196,6 +226,7 @@ function passPeopleFilters(jqObj) {
             if (t == 'video') this.$el.html(this.videoTemplate(this.model.toJSON()));
             if (t == 'photo') this.$el.html(this.photoTemplate(this.model.toJSON()));
             this.$el.addClass(t);
+            this.$el.attr('id',this.model.id);
             return this;
         }
     });
@@ -211,7 +242,12 @@ function passPeopleFilters(jqObj) {
 
     var VizPosts = Backbone.View.extend({
         initialized: false,
+        defaultFilter: "",
         init: function () {
+            if (!TNER.View.initialized) TNER.View.defaultFilter = $('.dashboard.posts').html();
+            
+            $(".dashboard.posts select[name='sort-by']").selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
+        
             $(".dashboard.posts select[name='sort-by']").change(function () {
                 var sortName = $(this).val().slice(1);
                 $('#isotope-container').isotope({
@@ -249,11 +285,6 @@ function passPeopleFilters(jqObj) {
                 itemSelector: '.post_card',
                 sortBy: 'date',
                 sortAscending: false
-            });
-            
-            $container.delegate( '.post_card.status .message, .post_card.link .message', 'click', function(){
-              $(this).parent('.post_card').toggleClass('large');
-              $container.isotope('reLayout');
             });
             
             $container.isotope({
@@ -309,11 +340,27 @@ function passPeopleFilters(jqObj) {
         },
         addAll: function () {
             $("#isotope-container").isotope('insert', $(TNER.View.elements));
+        },
+        expand: function(elem) {
+          $(elem).closest('.post_card').toggleClass('large');
+          $('#isotope-container').isotope('reLayout');
+        },
+        play: function(elem) {
+          var id = $(elem).closest('.post_card').attr('id');
+          var p = Posts.get(id);
+          $(elem).siblings('.videoImg').replaceWith('<iframe width="300" height="165" src="' + p.get('source') + '" frameborder="0" allowfullscreen></iframe>');
+          $(elem).remove();
         }
     });
     var VizPeople = Backbone.View.extend({
+        initialized: false,
         elements: "",
+        defaultFilter: "",
         init: function () {
+            if (!TNER.PeopleView.initialized) TNER.PeopleView.defaultFilter = $('.dashboard.people').html();
+            
+            $(".dashboard.people select[name='sort-by']").selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
+            
             $(".dashboard.people select[name='sort-by']").change(function () {
                 var sortName = $(this).val().slice(1);
                 $('#isotope-container').isotope({
@@ -329,6 +376,8 @@ function passPeopleFilters(jqObj) {
                 TNER.Filter.people.person = $(this).val().toLowerCase();
                 if($(this).val().length != 1) TNER.PeopleView.isotopeSearch();
             });
+            
+            TNER.PeopleView.initialized = true;
         },
         isotope: function() {
             var $container = $('#isotope-container');
@@ -408,8 +457,14 @@ function passPeopleFilters(jqObj) {
         },
         addAll: function () {
             $("#isotope-container").isotope('insert', $(TNER.PeopleView.elements));
-            $('.personPosts').click(function(event) {
-              collectPostsByUser(parseInt($(this).attr('href').slice(1)));
+            $('.posts').mouseenter(function() {
+              $(this).siblings('.overlay').show();
+            });
+            $('.overlay').mouseleave(function() {
+              $(this).hide();
+            });
+            $('.overlay').click(function(event) {
+              collectPostsByUser(parseInt($(this).attr('data-link')));
               event.preventDefault();
               return false;
             });
@@ -426,7 +481,7 @@ var newParams = {}, newParams2 = {};
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '320370924773477', // App ID
-    channelUrl : '//facebook.localhost/channel.html', // Channel File
+    channelUrl : '//tner.metamaps.cc/channel.html', // Channel File
     status     : true, // check login status
     cookie     : true, // enable cookies to allow the server to access the session
     xfbml      : true  // parse XFBML
@@ -543,6 +598,29 @@ function loadPeople() {
     });
 };
 
+function loadArchive(which) {
+  $('.choosePosts').hide();
+  $('.progress.loading').show();
+  $.getJSON('/data/' + which, function(response) { 
+    response = $.parseJSON(response); 
+    $.eachCallback(response.data, function() {
+          var newpost = new Post(createPostJSON(this));
+          Posts.add(newpost);
+          var view = new PostView({
+            model: newpost
+          });
+          view.render();
+          TNER.View.elements += view.$el[0].outerHTML; 
+      }, function(loopcount) {
+        $('#loadingposts').width( (((loopcount+1) / response.data.length) * 100) + '%' );
+        if (loopcount+1 == response.data.length) {
+          $('.progress.loading').hide();
+          TNER.View.addAll();
+        }
+      });
+  });
+}
+
 function addComments(params) {
     if (params == undefined) params = newParams2;
     
@@ -573,15 +651,23 @@ function addComments(params) {
     });
 };
 
+function peoplePage() {
+  $('.intro').hide();
+  $('.peopleTypes, .progress.archive').show();
+  loadPeople();
+  getAllPosts();
+}
+
 function getAllPosts(p) {
   if (p == undefined) p = 1;
-  $.getJSON('data/section' + p + '.json', function(response) { 
+  $.getJSON('/data/section' + p + '.json', function(response) { 
     response = $.parseJSON(response); 
     $.eachCallback(response.data, function() {
           TNER.allPosts.push(this);  
       }, function(loopcount) {
-        $('#loadingposts').width((((TNER.allPosts.length+loopcount+1) / 7976) * 100) + '%');
+        $('#loadingposts').width( (((TNER.allPosts.length+loopcount+1) / 7976) * 100) + '%' );
         if (loopcount+1 == response.data.length) {
+          // 7976
           if (TNER.allPosts.length < 7976) getAllPosts(p+1);
           else if(TNER.allPosts.length == 7976) {
             $('.progress.loading').hide();
@@ -592,9 +678,10 @@ function getAllPosts(p) {
   });
 }
 function collectPostsByUser(id) {
+  TNER.Filter.reset();
   $('#isotope-container').isotope('destroy');
   $('#isotope-container').html('');
-  $('.row.dashboard.people').hide();
+  $('.row.dashboard.people, .peopleTypes').hide();
   $('.postfilters').show();
   TNER.View.isotope();
   TNER.View.elements = "";
@@ -610,14 +697,18 @@ function collectPostsByUser(id) {
       TNER.View.elements += view.$el[0].outerHTML;
     }
   }
+  $('.postsTitle').html('All Posts by ' + People.get(id).get('name')).show();
   TNER.View.addAll();
   return TNER.View.isotopeSearch();
 }
+
 function returnToPeople(){
+  TNER.Filter.reset();
   $('#isotope-container').isotope('destroy');
   $('#isotope-container').html('');
   $('.postfilters').hide();
-  $('.row.dashboard.people').show();
+  $('.postsTitle').hide();
+  $('.row.dashboard.people, .peopleTypes').show();
   TNER.PeopleView.isotope();
   TNER.PeopleView.addAll();
   TNER.PeopleView.isotopeSearch();
@@ -626,10 +717,11 @@ function returnToPeople(){
 function createPostJSON(p) {
       if (p.type == "status") {
             return {
+                id: p.id,
                 type: p.type,
                 postaddress: p.actions[0].link,
                 time: dateToString(parseDate(p.created_time.substring(0,10))),
-                message: p.message,
+                message: p.message ? convertToLinks(p.message.replace(/\n/g, "<br>")) : "",
                 person: p.from.name,
                 personid: p.from.id,
                 like_count: p.likes ? p.likes.data.length : 0,
@@ -639,10 +731,11 @@ function createPostJSON(p) {
           }
           else if (p.type == "video") {
             return {
+                id: p.id,
                 type: p.type,
                 postaddress: p.actions[0].link,
                 time: dateToString(parseDate(p.created_time.substring(0,10))),
-                message: p.message,
+                message: p.message ? convertToLinks(p.message.replace(/\n/g, "<br>")) : "",
                 person: p.from.name,
                 personid: p.from.id,
                 like_count: p.likes ? p.likes.data.length : 0,
@@ -651,15 +744,17 @@ function createPostJSON(p) {
                 name: p.name,
                 description: p.description,
                 link: p.link,
-                source: p.source && p.source.indexOf('youtube') != -1 ? p.source.replace("&autoplay=1","") : p.source
+                source: p.source,
+                picture: p.picture
             };
           }
           else if (p.type == "link") {
             return {
+                id: p.id,
                 type: p.type,
                 postaddress: p.actions[0].link,
                 time: dateToString(parseDate(p.created_time.substring(0,10))),
-                message: p.message,
+                message: p.message ? convertToLinks(p.message.replace(/\n/g, "<br>")) : "",
                 person: p.from.name,
                 personid: p.from.id,
                 like_count: p.likes ? p.likes.data.length : 0,
@@ -674,10 +769,11 @@ function createPostJSON(p) {
           }
           else if (p.type == "photo") {
             return {
+                id: p.id,
                 type: p.type,
                 postaddress: p.actions[0].link,
                 time: dateToString(parseDate(p.created_time.substring(0,10))),
-                message: p.message,
+                message: p.message ? convertToLinks(p.message.replace(/\n/g, "<br>")) : "",
                 person: p.from.name,
                 personid: p.from.id,
                 like_count: p.likes ? p.likes.data.length : 0,
@@ -708,8 +804,110 @@ function createPostJSON(p) {
     });
     
     // Custom Select
-    $("select[name='sort-by']").selectpicker({style: 'btn-primary', menuStyle: 'dropdown-inverse'});
+    
     
   });
   
 })(jQuery);
+
+function addFilterHiding() {
+        var filtersHidden = false;
+        
+        function switchFilters() {
+          $('.dashboard.posts').toggle();
+          if (!filtersHidden) {
+            $('.hidefilters').html('Show Panel (ctrl-h)');
+          }
+          else if (filtersHidden) {
+           $('.hidefilters').html('Hide Panel (ctrl-h)');
+           $('#filterByUser').focus();
+          }
+          filtersHidden = !filtersHidden;
+        }
+        
+        $('.hidefilters').click(function() {
+          switchFilters();
+        });
+        
+        $(window).bind('keydown', function(event) {
+          if (event.ctrlKey || event.metaKey) {
+            switch (String.fromCharCode(event.which).toLowerCase()) {
+              case 'h':
+                event.preventDefault();
+                switchFilters();
+                break;
+            }
+          }
+        });
+      
+        $(window).scroll(function() {
+          var scrollTop = 328;
+          if ($(window).scrollTop() >= scrollTop){
+            if ( $('.dashboard.posts').css('position') === "static" && $('.dashboard.posts').css('display') === "block" ) {
+              $('.row.dashboard').css({
+                position: 'fixed',
+                top: '0',
+                'z-index': '5',
+                'border-top-left-radius': '0px',
+                'border-top-right-radius': '0px'
+              });
+            }
+            if ( $('.dashboard.people').css('position') === "static" && $('.dashboard.people').css('display') === "block" ) {
+              $('.row.dashboard').css({
+                position: 'fixed',
+                top: '0',
+                'z-index': '5',
+                'border-top-left-radius': '0px',
+                'border-top-right-radius': '0px'
+              });
+            }
+            if ($('.postfilters').css('display') === "none") {
+              $('.row.collection').css({
+                'margin-top': '111px'
+              });
+            } else {
+              $('.row.collection').css({
+                'margin-top': '208px'
+              });
+            }
+            $('.returnToPeople').css({
+              position: 'fixed',
+              left: '50%',
+              'margin-left': '-590px',
+              top: '40px'
+            });
+            $('.hidefilters').show();
+          }
+          else if($(window).scrollTop() < scrollTop){
+            if ( $('.dashboard.posts').css('position') === "fixed" ) {
+              $('.dashboard.posts').css({
+                position: 'static',
+                display: 'block',
+                'border-top-left-radius': '6px',
+                'border-top-right-radius': '6px'
+              });
+            }
+            if ( $('.dashboard.people').css('position') === "fixed" && $('.dashboard.people').css('display') === "block" ) {
+              $('.dashboard.people').css({
+                position: 'static',
+                display: 'block',
+                'border-top-left-radius': '6px',
+                'border-top-right-radius': '6px'
+              });
+            }
+            $('.row.collection').css({
+              'margin-top': '0px'
+            });
+            $('.returnToPeople').css({
+              position: 'absolute',
+              left: '-125px',
+              'margin-left': '0px',
+              top: '39px'
+            });
+            $('.hidefilters').hide();
+            $('.hidefilters').html('Hide Panel (ctrl-h)');
+            filtersHidden = false;
+          }
+          lastScroll = $(window).scrollTop();
+        });
+}
