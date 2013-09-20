@@ -48,7 +48,7 @@
           <div class="addSpace"><p>
             If you are part of the Next Edge on facebook, you can login and be able to browse the new posts section, which should give you some better features for viewing new content going into the Next Edge, in terms of filtering for just quality content. 
           </p>
-          <fb:login-button show-faces="true" width="140" max-rows="1"></fb:login-button></div>
+          <fb:login-button scope="user_groups" show-faces="true" width="140" max-rows="1"></fb:login-button></div>
         </div>
       </div> <!-- /row -->
       
